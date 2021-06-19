@@ -1,0 +1,107 @@
+#########################################################
+Locations
+#########################################################
+
+#all german cities
+SELECT DISTINCT ?city ?cityLabel WHERE {
+  ?city wdt:P17 wd:Q183;
+    (wdt:P31/(wdt:P279*)) wd:Q515;
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }
+}
+ORDER BY ?cityLabel
+
+
+
+
+#########################################################
+#Namen
+#########################################################
+
+#stackoverflow - approaches to get names: https://stackoverflow.com/questions/1452003/plain-computer-parseable-lists-of-common-first-names/10475005
+# german names included somewhere?
+
+#alle Familiennamen
+SELECT ?item ?Familienname ?FamiliennameLabel WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  
+  OPTIONAL { ?item wdt:P734 ?Familienname. }
+}
+LIMIT 100
+
+#alle Vornamen --> tbd: gunktioniert?
+SELECT DISTINCT ?VornameLabel WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  OPTIONAL { ?item wdt:P735 ?Vorname. }
+}
+LIMIT 100
+#count:
+SELECT (COUNT (DISTINCT ?VornameLabel) AS ?count) 
+WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  OPTIONAL { ?item wdt:P735 ?Vorname. }
+}
+
+
+
+
+# firstnames and lastnames of persons born in New York
+# Note. Doesn't include humans with the birth place listed as a hospital
+# or an administrative area or other location of New York City.
+# Only humans listed as born in New York City.
+SELECT DISTINCT ?item ?itemLabel ?itemDescription ?sitelinks ?Familienname ?FamiliennameLabel ?Vorname ?VornameLabel WHERE {
+  ?item wdt:P31 wd:Q5;
+    wdt:P19 wd:Q60.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }
+  OPTIONAL { ?item wdt:P734 ?Familienname. }
+  OPTIONAL { ?item wdt:P735 ?Vorname. }
+}
+ORDER BY DESC (?sitelinks)
+
+
+## vor und nachname aller menschen in deutschland geboren
+
+SELECT 
+?FamiliennameLabel 
+?VornameLabel
+
+WHERE {
+  ?item wdt:P31 wd:Q5;
+    #wdt:P20 wd:Q183; #sterbeort deutschland 
+    #wdt:P19 wd:Q183; #geburtsort deutschland
+    wdt:P551 wd:Q183; # wohnort deutschland    
+        
+    wikibase:sitelinks ?sitelinks.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,nl". }
+  OPTIONAL { ?item wdt:P734 ?Familienname. }
+  OPTIONAL { ?item wdt:P735 ?Vorname. }
+  
+}
+LIMIT 1000
+
+
+## ALL SURNAMES (worldwide)
+SELECT DISTINCT ?surnameLabel WHERE {
+  ?person wdt:P31 wd:Q5.
+  ?person wdt:P734 ?surname.
+  
+
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "de". }
+}
+
+
+
+##########LOCATION -> OK! #TODO: remove all lines that start with "Baudenkmal " OR "Siedlung " OR "Teil " OR "Wohnanlage " OR "Wohnblock "
+# all German settlements
+SELECT 
+#?item 
+?itemLabel
+#?coord
+WHERE
+{
+	?item wdt:P31/wdt:P279* wd:Q486972;
+    	      wdt:P17 wd:Q183;
+    	      rdfs:label ?itemLabel;
+    	      wdt:P625 ?coord;
+    	 FILTER (lang(?itemLabel) = "de"). 
+}
+
