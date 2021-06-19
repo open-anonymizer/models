@@ -1,5 +1,3 @@
-firstnames: csv download from cologne https://offenedaten-koeln.de/dataset/vornamen
-
 org: downloaded csv from https://powrbot.com/companies/list-of-companies-in-germany/ + added common postal services in germany
 loc: wikiquery with all german settelments
-per: firstnames: vornamen.com & lastnames: https://www.namenforschung.net/dfd/woerterbuch/gesamtliste-veroeffentlichter-namenartikel/
+per: firstnames: vornamen.com; lastnames: https://www.namenforschung.net/dfd/woerterbuch/gesamtliste-veroeffentlichter-namenartikel/
