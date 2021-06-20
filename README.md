@@ -2,7 +2,6 @@
 
 We compared the following models: 
 
-- distilbert-base-german-cased-finetuned-conll03-german
 - distilbert-base-german-cased-finetuned-germeval14-german
 - xlm-roberta-large-finetuned-conll03-german
 - spaCy
